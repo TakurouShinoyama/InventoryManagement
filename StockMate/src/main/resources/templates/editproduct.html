@@ -13,12 +13,11 @@
         </div>
         <nav class="main-navigation" aria-label="メインナビゲーション">
             <ul class="nav-list">
-                <li class="nav-item"><a href="/StockList">在庫一覧</a></li>
-                <li class="nav-item"><a href="/Arrival">入庫</a></li>
-                <li class="nav-item"><a href="/Shipping">出庫</a></li>
+                <li class="nav-item"><a th:href="@{/StockList}">在庫一覧</a></li>
+                <li class="nav-item"><a th:href="@{/Arrival}">入庫</a></li>
+                <li class="nav-item"><a th:href="@{/Shipping}">出庫</a></li>
             </ul>
         </nav>
-
         <button class="menu-toggle" aria-controls="main-navigation-menu" aria-expanded="false" aria-label="メニューを開閉">
             <span></span>
             <span></span>
@@ -30,17 +29,23 @@
 <main style="min-height: 1500px; background-color: #f0f0f0; padding: 20px;">
     <h2>商品編集</h2>
     <div class="main-contents">
-        <div class="message-icon" th:each="stock : ${stocks}">
+        <form th:action="@{productupdate/{id}(id=${product.id})}" th:object="${product}" th:method="put">
+        <div class="message-icon">
             <div>
-                ID : <span th:text="${stock.id}"/>
+                商品名
             </div>
+            <input type="text" th:field="*{name}"/>
             <div>
-                商品ID : <span th:text="${stock.productId}"/>
+                商品内容
             </div>
+            <textarea th:field="*{contents}"></textarea>
             <div>
-                在庫数 : <span th:text="${stock.stockQuantity}"/>
+                単価
             </div>
+            <input type="number" th:field="*{price}"/>
         </div>
+            <input type="submit" value="更新">
+        </form>
     </div>
 </main>
 <script th:src="@{/js/script.js}"></script>

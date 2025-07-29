@@ -13,13 +13,13 @@
         </div>
         <nav class="main-navigation" aria-label="メインナビゲーション">
             <ul class="nav-list">
-                <li class="nav-item"><a href="/StockList">在庫一覧</a></li>
-                <li class="nav-item"><a href="/Arrival">入庫</a></li>
-                <li class="nav-item"><a href="/Shipping">出庫</a></li>
+                <li class="nav-item"><a th:href="@{/StockList}">在庫一覧</a></li>
+                <li class="nav-item"><a th:href="@{/Arrival}">入庫</a></li>
+                <li class="nav-item"><a th:href="@{/Shipping}">出庫</a></li>
             </ul>
         </nav>
-
-        <button class="menu-toggle" aria-controls="main-navigation-menu" aria-expanded="false" aria-label="メニューを開閉">
+        <button class="menu-toggle" aria-controls="main-navigation-menu" aria-expanded="false"
+                aria-label="メニューを開閉">
             <span></span>
             <span></span>
             <span></span>
@@ -30,16 +30,29 @@
 <main style="min-height: 1500px; background-color: #f0f0f0; padding: 20px;">
     <h2>商品詳細</h2>
     <div class="main-contents">
-        <div class="message-icon" th:each="stock : ${stocks}">
+        <div class="">
+            <a th:href="@{/StockList}">
+                <button type="button">戻る</button>
+            </a>
+        </div>
+        <div class="message-icon">
             <div>
-                ID : <span th:text="${stock.id}"/>
+                商品名 : <span th:text="${product.name}"/>
             </div>
             <div>
-                商品ID : <span th:text="${stock.productId}"/>
+                商品内容 : <span th:text="${product.contents}"/>
             </div>
             <div>
-                在庫数 : <span th:text="${stock.stockQuantity}"/>
+                単価 : <span th:text="${product.price}"/>
             </div>
+            <div>
+                在庫数 : <span th:text="${product.stockQuantity}"/>
+            </div>
+        </div>
+        <div class="">
+            <a th:href="@{/EditProduct(id=${product.id})}">
+                <button type="button">編集</button>
+            </a>
         </div>
     </div>
 </main>

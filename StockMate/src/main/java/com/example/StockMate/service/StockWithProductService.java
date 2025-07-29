@@ -1,6 +1,8 @@
 package com.example.StockMate.service;
 
+import com.example.StockMate.controller.form.ProductForm;
 import com.example.StockMate.controller.form.StockForm;
+import com.example.StockMate.repository.ProductRepository;
 import com.example.StockMate.repository.StockRepository;
 import com.example.StockMate.repository.entity.Product;
 import com.example.StockMate.repository.entity.Stock;
@@ -17,21 +19,22 @@ public class StockWithProductService {
     @Autowired
     StockRepository stockRepository;
 
+    @Autowired
+    ProductRepository productRepository;
+
     public List<StockForm> findAllStock() {
         List<Stock> results = stockRepository.findAll();
-        List<StockForm> stocks = setStockForm(results);
-        return stocks;
+        return setStockForm(results);
     }
 
     private List<StockForm> setStockForm(List<Stock> results) {
         List<StockForm> stocks = new ArrayList<>();
 
-        for (int i = 0; i < results.size(); i++) {
+        for (Stock value : results) {
             StockForm stock = new StockForm();
-            Stock result = results.get(i);
-            stock.setId(result.getId());
+            stock.setId(value.getId());
             //stock.setProductId(result.getProductId());
-            stock.setStockQuantity(result.getStockQuantity());
+            stock.setStockQuantity(value.getStockQuantity());
             stocks.add(stock);
         }
         return stocks;
@@ -63,8 +66,33 @@ public class StockWithProductService {
         return form;
     }
 
-    public Optional<StockForm> getStockWithProductById(int id) {
-        return stockRepository.findByProductIdWithProduct(id)
-                .map(this::convertToStockForm);
+    private ProductForm convertToProductForm(Stock stock) {
+        ProductForm form = new ProductForm();
+
+        form.setId(stock.getProduct().getId());
+        form.setName(stock.getProduct().getName());
+        form.setContents(stock.getProduct().getContents());
+        form.setPrice(stock.getProduct().getPrice());
+        form.setStockQuantity(stock.getStockQuantity());
+
+        return form;
+    }
+
+    public ProductForm getStockWithProductById(int id) {
+        Optional<Stock> stocks = stockRepository.findByProductIdWithProduct(id);
+        return convertToProductForm(stocks.get());
+    }
+
+    public void saveProduct(ProductForm form) {
+        productRepository.save(setProductEntity(form));
+    }
+
+    private Product setProductEntity(ProductForm form) {
+        Product product = new Product();
+        product.setId(form.getId());
+        product.setName(form.getName());
+        product.setContents(form.getContents());
+        product.setPrice(form.getPrice());
+        return product;
     }
 }
