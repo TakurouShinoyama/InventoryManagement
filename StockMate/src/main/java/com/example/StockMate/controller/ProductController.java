@@ -41,8 +41,8 @@ public class ProductController {
         return mav;
     }
 
-    @PutMapping("/productupdate/{id}")
-    public ModelAndView productUpdate(@PathVariable Integer id, @ModelAttribute("productModel") ProductForm product){
+    @PutMapping("/ProductUpdate/{id}")
+    public ModelAndView productUpdate(@PathVariable Integer id, @ModelAttribute("product") ProductForm product){
         product.setId(id);
         service.saveProduct(product);
 

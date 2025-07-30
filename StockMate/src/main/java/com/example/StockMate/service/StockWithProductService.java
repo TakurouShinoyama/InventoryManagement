@@ -95,4 +95,14 @@ public class StockWithProductService {
         product.setPrice(form.getPrice());
         return product;
     }
+
+    public void createProduct(ProductForm form) {
+        productRepository.save(setProductEntity(form));
+
+        Stock stock = new Stock();
+        stock.setProduct(productRepository.findByName(form.getName()).get());
+        stock.setStockQuantity(0);
+
+        stockRepository.save(stock);
+    }
 }
