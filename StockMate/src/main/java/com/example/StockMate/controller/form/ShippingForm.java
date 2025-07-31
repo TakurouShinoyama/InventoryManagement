@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ArrivalForm {
+public class ShippingForm {
     private Integer productId;
-    private Integer arrivalQuantity;
+    private Integer shippingQuantity;
+    private String address;
 }
