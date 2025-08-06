@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Integer> {
 
-    @Query("SELECT s FROM Stock s JOIN FETCH s.product ORDER BY s.id DESC")
+    @Query("SELECT s FROM Stock s JOIN FETCH s.product ORDER BY s.id ASC")
     List<Stock> findAllWithProduct();
 
     @Query("SELECT s FROM Stock s JOIN FETCH s.product WHERE s.id = :id")

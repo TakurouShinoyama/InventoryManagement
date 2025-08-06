@@ -1,5 +1,6 @@
 package com.example.StockMate.service;
 
+import com.example.StockMate.CsvDataBean;
 import com.example.StockMate.controller.form.ProductForm;
 import com.example.StockMate.controller.form.StockForm;
 import com.example.StockMate.repository.ProductRepository;
@@ -33,7 +34,6 @@ public class StockWithProductService {
         for (Stock value : results) {
             StockForm stock = new StockForm();
             stock.setId(value.getId());
-            //stock.setProductId(result.getProductId());
             stock.setStockQuantity(value.getStockQuantity());
             stocks.add(stock);
         }
@@ -104,5 +104,21 @@ public class StockWithProductService {
         stock.setStockQuantity(0);
 
         stockRepository.save(stock);
+    }
+
+    public List<CsvDataBean> findAllForCsv() {
+        List<CsvDataBean> csvDatas  = new ArrayList<>();
+
+        List<StockForm> allStock = findAllStockWithProducts();
+
+        for (StockForm stock : allStock) {
+            CsvDataBean csvData = new CsvDataBean();
+            csvData.setId(stock.getId());
+            csvData.setProductName(stock.getProductName());
+            csvData.setProductContents(stock.getProductContents());
+            csvData.setStockQuantity(stock.getStockQuantity());
+            csvDatas.add(csvData);
+        }
+        return csvDatas;
     }
 }

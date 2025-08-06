@@ -28,35 +28,36 @@
 <div class="header-spacer"></div>
 <main style="min-height: 1500px; background-color: #f0f0f0; padding: 20px;">
     <h2>在庫一覧</h2>
+    <div class="listbuttonarea">
+        <a th:href="@{/NewProduct}">
+            <button type="button" class="listbutton">商品登録</button>
+        </a>
+        <a th:href="@{/Export}">
+            <button type="button"  class="listbutton">ファイル出力</button>
+        </a>
+    </div>
     <div class="main-contents">
-        <div class="tmp1">
-            <a href="/NewProduct">
-                <button type="button">商品登録</button>
-            </a>
-            <a href="/Output">
-                <button type="button">ファイル出力</button>
-            </a>
-        </div>
-        <div class="message-icon" th:each="stock : ${stocks}">
-            <div>
-                ID : <span th:text="${stock.id}"/>
-            </div>
-            <div>
-                商品ID : <span th:text="${stock.productId}"/>
-            </div>
-            <div>
-                在庫数 : <span th:text="${stock.stockQuantity}"/>
-            </div>
-            <div>
-                商品名 : <a th:href="@{/ProductDetails(id=${stock.productId})}" th:text="${stock.productName}"/>
-            </div>
-            <div>
-                商品詳細 : <span th:text="${stock.productContents}"/>
-            </div>
-            <div>
-                単価 : <span th:text="${stock.productPrice}"/>
-            </div>
-        </div>
+        <table class="stock-table">
+            <thead>
+            <tr>
+                <th>商品ID</th>
+                <th>商品名</th>
+                <th>商品内容</th>
+                <th>単価</th>
+                <th>在庫数</th>
+            </thead>
+            <tbody>
+            <tr th:each="stock : ${stocks}">
+                <td th:text="${stock.productId}"></td>
+                <td>
+                    <a th:href="@{/ProductDetails(id=${stock.productId})}" th:text="${stock.productName}"></a>
+                </td>
+                <td th:text="${stock.productContents}"></td>
+                <td th:text="${stock.productPrice}"></td>
+                <td th:text="${stock.stockQuantity}"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </main>
 <script th:src="@{/js/script.js}"></script>
