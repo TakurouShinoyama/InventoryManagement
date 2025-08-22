@@ -186,7 +186,6 @@ a {
 	padding: 10px 10px 5px 10px;
 	background-color: #B4CCCC;
 	height: 100%;
-	width: 80%;
 }
 
 .footer-contents {
@@ -340,5 +339,5 @@ label {
 
 /* テーブルの行にマウスを乗せた時のスタイル */
 .stock-table tbody tr:hover {
-    background-color: #f5f5f5;
+    background-color: #8eeded;
 }

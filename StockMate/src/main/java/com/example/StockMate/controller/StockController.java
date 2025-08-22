@@ -3,13 +3,17 @@ package com.example.StockMate.controller;
 import com.example.StockMate.controller.form.ProductForm;
 import com.example.StockMate.controller.form.StockForm;
 import com.example.StockMate.service.StockWithProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -32,29 +36,30 @@ public class StockController {
     }
 
     @GetMapping("/NewProduct")
-    public ModelAndView newProduct() {
-        ModelAndView mav = new ModelAndView();
+    public String newProduct(Model model) {
 
-        List<StockForm> contentData = stockWithProductService.findAllStock();
+        if (!model.containsAttribute("product")) {
+            model.addAttribute("product", new ProductForm());
+        }
 
-        mav.setViewName("newproduct");
-
-        mav.addObject("product", new ProductForm());
-
-        return mav;
+        return "newproduct";
     }
 
     @PostMapping("/ProductCreate")
-    public ModelAndView productCreate(@ModelAttribute("product") ProductForm product){
+    public String productCreate(
+            @Valid @ModelAttribute("product") ProductForm product,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes){
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.product", bindingResult);
+            redirectAttributes.addFlashAttribute("product", product);
+            return "redirect:/NewProduct";
+        }
+
         stockWithProductService.createProduct(product);
 
-        ModelAndView mav = new ModelAndView();
-
-        List<StockForm> contentData = stockWithProductService.findAllStockWithProducts();
-
-        mav.setViewName("stocklist");
-
-        mav.addObject("stocks", contentData);
-        return mav;
+        redirectAttributes.addFlashAttribute("successMessage", "商品を登録しました。");
+        return "redirect:/StockList";
     }
 }
