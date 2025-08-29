@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductForm {
+
     private int id;
 
     @NotBlank(message = "商品名を入力してください")
@@ -16,7 +17,7 @@ public class ProductForm {
     private String contents;
 
     @NotNull(message = "単価を入力してください")
-    @Min(value = 1, message = "単価は0以上で入力してください")
+    @Min(value = 1, message = "単価は1以上で入力してください")
     private int price;
 
     private int stockQuantity;

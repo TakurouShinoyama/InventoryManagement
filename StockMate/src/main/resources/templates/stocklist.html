@@ -18,7 +18,8 @@
                 <li class="nav-item"><a th:href="@{/Shipping}">出庫</a></li>
             </ul>
         </nav>
-        <button class="menu-toggle" aria-controls="main-navigation-menu" aria-expanded="false" aria-label="メニューを開閉">
+        <button class="menu-toggle" aria-controls="main-navigation-menu" aria-expanded="false"
+                aria-label="メニューを開閉">
             <span></span>
             <span></span>
             <span></span>
@@ -33,7 +34,7 @@
             <button type="button" class="listbutton">商品登録</button>
         </a>
         <a th:href="@{/Export}">
-            <button type="button"  class="listbutton">ファイル出力</button>
+            <button type="button" class="listbutton">ファイル出力</button>
         </a>
     </div>
     <div class="main-contents">
@@ -61,5 +62,37 @@
     </div>
 </main>
 <script th:src="@{/js/script.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+        const successMessage = /*[[${successMessage}]]*/ null;
+        const errorMessage = /*[[${errorMessage}]]*/ null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            if (successMessage) {
+                Toastify({
+                    text: successMessage,
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
+                }).showToast();
+            }
+
+            if (errorMessage) {
+                Toastify({
+                    text: errorMessage,
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                    stopOnFocus: true
+                }).showToast();
+            }
+        });
+
+    /*]]>*/
+</script>
 </body>
 </html>

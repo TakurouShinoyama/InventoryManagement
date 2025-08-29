@@ -23,16 +23,13 @@ public class StockController {
     private StockWithProductService stockWithProductService;
 
     @GetMapping("/StockList")
-    public ModelAndView stockList() {
-        ModelAndView mav = new ModelAndView();
+    public String stockList(Model model) {
 
-        //List<StockForm> contentData = stockService.findAllStock();
         List<StockForm> contentData = stockWithProductService.findAllStockWithProducts();
 
-        mav.setViewName("stocklist");
+        model.addAttribute("stocks", contentData);
 
-        mav.addObject("stocks", contentData);
-        return mav;
+        return "stocklist";
     }
 
     @GetMapping("/NewProduct")

@@ -1,12 +1,16 @@
 package com.example.StockMate.controller;
 
 import com.example.StockMate.controller.form.ArrivalForm;
+import com.example.StockMate.controller.form.ProductForm;
 import com.example.StockMate.controller.form.ShippingForm;
 import com.example.StockMate.controller.form.StockForm;
 import com.example.StockMate.service.ShippingService;
 import com.example.StockMate.service.StockWithProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,22 +29,30 @@ public class ShippingController {
     private ShippingService shippingService;
 
     @GetMapping("/Shipping")
-    public ModelAndView showShippingFrom() {
-        ModelAndView mav = new ModelAndView();
+    public String showShippingFrom(Model model) {
+
+        if (!model.containsAttribute("shippingForm")) {
+            model.addAttribute("shippingForm", new ShippingForm());
+        }
 
         List<StockForm> stocks = stockWithProductService.findAllStockWithProducts();
 
-        mav.setViewName("shipping");
+        model.addAttribute("stocks", stocks);
 
-        mav.addObject("stocks", stocks);
-
-        mav.addObject("shippingForm", new ShippingForm());
-
-        return mav;
+        return "Shipping";
     }
 
     @PostMapping("/NewShipping")
-    public String newArrival(@ModelAttribute("shippingForm") ShippingForm shippingForm, RedirectAttributes redirectAttributes) {
+    public String newArrival(
+            @Valid @ModelAttribute("shippingForm") ShippingForm shippingForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.shippingForm", bindingResult);
+            redirectAttributes.addFlashAttribute("shippingForm", shippingForm);
+            return "redirect:/Shipping";
+        }
 
         shippingService.shippingProcess(shippingForm);
 
@@ -48,6 +60,6 @@ public class ShippingController {
 
         redirectAttributes.addFlashAttribute("successMessage", message);
 
-        return "redirect:/Arrival";
+        return "redirect:/Shipping";
     }
 }

@@ -35,6 +35,7 @@
                 <div>
                     商品名
                 </div>
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></div>
                 <input type="text" th:field="*{name}"/>
                 <div>
                     商品内容
@@ -43,6 +44,7 @@
                 <div>
                     単価
                 </div>
+                <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="error-message"></div>
                 <input type="number" th:field="*{price}"/>
             </div>
             <input type="submit" value="更新">
@@ -50,5 +52,37 @@
     </div>
 </main>
 <script th:src="@{/js/script.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+        const successMessage = /*[[${successMessage}]]*/ null;
+        const errorMessage = /*[[${errorMessage}]]*/ null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            if (successMessage) {
+                Toastify({
+                    text: successMessage,
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)"
+                }).showToast();
+            }
+
+            if (errorMessage) {
+                Toastify({
+                    text: errorMessage,
+                    duration: 3000,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                    stopOnFocus: true
+                }).showToast();
+            }
+        });
+
+    /*]]>*/
+</script>
 </body>
 </html>

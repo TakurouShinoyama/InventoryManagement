@@ -341,3 +341,9 @@ label {
 .stock-table tbody tr:hover {
     background-color: #8eeded;
 }
+
+/* エラーメッセージの共通設定 */
+.error-message {
+    font-weight: bold;
+    color: red;
+}

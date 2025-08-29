@@ -39,6 +39,7 @@
                 <div>
                     商品名
                 </div>
+                <div th:if="${#fields.hasErrors('productId')}" th:errors="*{productId}" class="error-message"></div>
                 <select th:field="*{productId}">
                     <option value="">-- 商品を選択してください --</option>
                     <option th:each="stock : ${stocks}"
@@ -49,6 +50,8 @@
                 <div>
                     個数
                 </div>
+                <div th:if="${#fields.hasErrors('arrivalQuantity')}" th:errors="*{arrivalQuantity}"
+                     class="error-message"></div>
                 <input type="number" th:field="*{arrivalQuantity}"/>
             </div>
             <input type="submit" value="入荷">
